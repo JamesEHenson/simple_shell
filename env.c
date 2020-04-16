@@ -7,8 +7,8 @@
  */
 int envFunc(config *build)
 {
-  printList(build->env);
-  return (1);
+printList(build->env);
+return (1);
 }
 
 /**
@@ -19,31 +19,30 @@ int envFunc(config *build)
  */
 int setenvFunc(config *build)
 {
-  register int index, len;
-  static char buffer[BUFSIZE];
-
-  if (countArgs(build->args) != 3)
-    {
-      errno = EWSIZE;
-      errorHand(build);
-      return (1);
-    }
-  len = _strlen(build->args[1]) + _strlen(build->args[2]) + 2;
-  _strcat(buffer, build->args[1]);
-  _strcat(buffer, "=");
-  _strcat(buffer, build->args[2]);
-  insertNullByte(buffer, len - 1);
-  index = searchNode(build->env, build->args[1]);
-  if (index == -1)
-    {
-      addNodeEnd(&build->env, buffer);
-      insertNullByte(buffer, 0);
-      return (1);
-    }
-  deleteNodeAtIndex(&build->env, index);
-  addNodeAtIndex(&build->env, index, buffer);
-  insertNullByte(buffer, 0);
-  return (1);
+register int index, len;
+static char buffer[BUFSIZE];
+if (countArgs(build->args) != 3)
+{
+errno = EWSIZE;
+errorHand(build);
+return (1);
+}
+len = _strlen(build->args[1]) + _strlen(build->args[2]) + 2;
+_strcat(buffer, build->args[1]);
+_strcat(buffer, "=");
+_strcat(buffer, build->args[2]);
+insertNullByte(buffer, len - 1);
+index = searchNode(build->env, build->args[1]);
+if (index == -1)
+{
+addNodeEnd(&build->env, buffer);
+insertNullByte(buffer, 0);
+return (1);
+}
+deleteNodeAtIndex(&build->env, index);
+addNodeAtIndex(&build->env, index, buffer);
+insertNullByte(buffer, 0);
+return (1);
 }
 
 /**
@@ -54,28 +53,27 @@ int setenvFunc(config *build)
  */
 int unsetenvFunc(config *build)
 {
-  register int foundVar, i = 1;
-  _Bool foundMatch = false;
-
-  while (build->args[i])
-    {
-      if (_isalpha(build->args[i][0]) || build->args[i][0] == '_')
-	{
-	  foundVar = searchNode(build->env, build->args[i]);
-	  if (foundVar > -1)
-	    {
-	      deleteNodeAtIndex(&build->env, foundVar);
-	      foundMatch = true;
-	    }
-	}
-      i++;
-    }
-  if (foundMatch == false)
-    {
-      errno = ENOSTRING;
-      errorHand(build);
-    }
-  return (1);
+register int foundVar, i = 1;
+_Bool foundMatch = false;
+while (build->args[i])
+{
+if (_isalpha(build->args[i][0]) || build->args[i][0] == '_')
+{
+foundVar = searchNode(build->env, build->args[i]);
+if (foundVar > -1)
+{
+deleteNodeAtIndex(&build->env, foundVar);
+foundMatch = true;
+}
+}
+i++;
+}
+if (foundMatch == false)
+{
+errno = ENOSTRING;
+errorHand(build);
+}
+return (1);
 }
 
 /**
@@ -85,10 +83,10 @@ int unsetenvFunc(config *build)
  */
 int _isalpha(int c)
 {
-  if (c > 64 && c < 91)
-    return (1);
-  else if (c > 96 && c < 123)
-    return (1);
-  else
-    return (0);
+if (c > 64 && c < 91)
+return (1);
+else if (c > 96 && c < 123)
+return (1);
+else
+return (0);
 }

@@ -9,29 +9,28 @@
  */
 int updateOld(config *build)
 {
-  register int pwdIndex = 0, index = 0;
-  static char old[BUFSIZE];
-  char *current = NULL;
-
-  _strcat(old, "OLD");
-  pwdIndex = searchNode(build->env, "PWD");
-  if (pwdIndex == -1)
-    {
-      return (-1);
-    }
-  current = getNodeAtIndex(build->env, pwdIndex);
-  _strcat(old, current);
-  insertNullByte(old, _strlen(current) + 4);
-  free(current);
-  index = searchNode(build->env, "OLDPWD");
-  if (index == -1)
-    {
-      return (-1);
-    }
-  deleteNodeAtIndex(&build->env, index);
-  addNodeAtIndex(&build->env, index, old);
-  insertNullByte(old, 0);
-  return (pwdIndex);
+register int pwdIndex = 0, index = 0;
+static char old[BUFSIZE];
+char *current = NULL;
+_strcat(old, "OLD");
+pwdIndex = searchNode(build->env, "PWD");
+if (pwdIndex == -1)
+{
+return (-1);
+}
+current = getNodeAtIndex(build->env, pwdIndex);
+_strcat(old, current);
+insertNullByte(old, _strlen(current) + 4);
+free(current);
+index = searchNode(build->env, "OLDPWD");
+if (index == -1)
+{
+return (-1);
+}
+deleteNodeAtIndex(&build->env, index);
+addNodeAtIndex(&build->env, index, old);
+insertNullByte(old, 0);
+return (pwdIndex);
 }
 
 /**
@@ -42,18 +41,18 @@ int updateOld(config *build)
  */
 _Bool updateCur(config *build, int index)
 {
-  static char tmp[BUFSIZE], cwd[BUFSIZE];
+static char tmp[BUFSIZE], cwd[BUFSIZE];
 
-  getcwd(tmp, BUFSIZE);
-  _strcat(cwd, "PWD=");
-  _strcat(cwd, tmp);
-  if (index > -1)
-    {
-      deleteNodeAtIndex(&build->env, index);
-      addNodeAtIndex(&build->env, index, cwd);
-    } else
-    addNodeAtIndex(&build->env, 0, cwd);
-  insertNullByte(tmp, 0);
-  insertNullByte(cwd, 0);
-  return (true);
+getcwd(tmp, BUFSIZE);
+_strcat(cwd, "PWD=");
+_strcat(cwd, tmp);
+if (index > -1)
+{
+deleteNodeAtIndex(&build->env, index);
+addNodeAtIndex(&build->env, index, cwd);
+} else
+addNodeAtIndex(&build->env, 0, cwd);
+insertNullByte(tmp, 0);
+insertNullByte(cwd, 0);
+return (true);
 }
