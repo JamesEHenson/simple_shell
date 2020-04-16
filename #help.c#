@@ -31,7 +31,7 @@ if (_strcmp(build->args[j], help_arr[i].command) == 0)
 {
 foundCommand = true;
 help_arr[i].func(build);
-break;
+break
 }
 i++;
 }
@@ -101,4 +101,4 @@ char str[] = "history: history\n\tNot supported in this version.\n";
 (void)build;
 write(STDOUT_FILENO, str, _strlen(str));
 return (1);
-}
+
